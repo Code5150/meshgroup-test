@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     private final long expirationMs;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secret,
-                            @Value("${jwt.expiration-ms}") long expirationMs) {
+                            @Value("${jwt.expiration-ms}") long expirationMs) throws JOSEException {
         byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
         this.signer = new MACSigner(secretBytes);
         this.verifier = new MACVerifier(secretBytes);
