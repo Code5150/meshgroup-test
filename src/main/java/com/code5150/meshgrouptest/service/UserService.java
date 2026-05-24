@@ -21,7 +21,6 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    private static final String USER_ID = "user";
     private static final String WILDCARD = "%";
 
     private final UserRepository userRepository;
@@ -36,13 +35,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public UserResponse getUserResponseById(Long id) {
+        return toUserResponse(getUserById(id));
+    }
+
+    @Transactional(readOnly = true)
     public Page<UserResponse> searchUsers(UserSearchRequest request) {
         Specification<User> spec = buildSearchSpecification(request);
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("id"));
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(User.Fields.id));
         Page<User> userPage = userRepository.findAll(spec, pageable);
         return userPage.map(this::toUserResponse);
     }
 
+    @Transactional
     public void updateUser(Long userId, UpdateUserRequest request) {
         User user = getUserById(userId);
         updateEmails(user, request.getEmails());
@@ -100,18 +105,18 @@ public class UserService {
             List<Predicate> predicates = new ArrayList<>();
 
             if (request.getDateOfBirth() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("dateOfBirth"), request.getDateOfBirth()));
+                predicates.add(cb.greaterThanOrEqualTo(root.get(User.Fields.dateOfBirth), request.getDateOfBirth()));
             }
             if (request.getPhone() != null && !request.getPhone().isBlank()) {
-                Join<User, PhoneData> phoneJoin = root.join("phones", JoinType.INNER);
-                predicates.add(cb.equal(phoneJoin.get("phone"), request.getPhone()));
+                Join<User, PhoneData> phoneJoin = root.join(User.Fields.phones, JoinType.INNER);
+                predicates.add(cb.equal(phoneJoin.get(PhoneData.Fields.phone), request.getPhone()));
             }
             if (request.getName() != null && !request.getName().isBlank()) {
-                predicates.add(cb.like(root.get("name"), request.getName() + WILDCARD));
+                predicates.add(cb.like(root.get(User.Fields.name), request.getName() + WILDCARD));
             }
             if (request.getEmail() != null && !request.getEmail().isBlank()) {
-                Join<User, EmailData> emailJoin = root.join("emails", JoinType.INNER);
-                predicates.add(cb.equal(emailJoin.get("email"), request.getEmail()));
+                Join<User, EmailData> emailJoin = root.join(User.Fields.emails, JoinType.INNER);
+                predicates.add(cb.equal(emailJoin.get(EmailData.Fields.email), request.getEmail()));
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };
