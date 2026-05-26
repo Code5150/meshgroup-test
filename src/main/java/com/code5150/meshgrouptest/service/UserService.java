@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class UserService {
     private final AccountRepository accountRepository;
     private final EmailDataRepository emailDataRepository;
     private final PhoneDataRepository phoneDataRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
@@ -54,6 +56,17 @@ public class UserService {
     @CachePut(value = "users", key = "#userId")
     public UserResponse updateUser(Long userId, UpdateUserRequest request) {
         User user = getUserById(userId);
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName());
+        }
+        if (request.getDateOfBirth() != null) {
+            user.setDateOfBirth(request.getDateOfBirth());
+        }
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         updateEmails(user, request.getEmails());
         updatePhones(user, request.getPhones());
         return toUserResponse(user);
