@@ -16,14 +16,14 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @PostMapping("/login")
+    public AuthResponse login(@Valid @RequestBody AuthRequest request) {
+        return authService.authenticate(request);
+    }
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
-    }
-
-    @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody AuthRequest request) {
-        return authService.authenticate(request);
     }
 }

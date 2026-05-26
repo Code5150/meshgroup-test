@@ -3,7 +3,9 @@ package com.code5150.meshgrouptest.controller;
 import com.code5150.meshgrouptest.dto.UpdateUserRequest;
 import com.code5150.meshgrouptest.dto.UserResponse;
 import com.code5150.meshgrouptest.dto.UserSearchRequest;
+import com.code5150.meshgrouptest.security.SecuritySchemes;
 import com.code5150.meshgrouptest.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@SecurityRequirement(name = SecuritySchemes.BEARER_AUTH)
 public class UserController {
 
     private final UserService userService;
