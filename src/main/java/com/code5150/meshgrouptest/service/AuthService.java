@@ -65,6 +65,7 @@ public class AuthService {
         Account account = Account.builder()
                 .user(user)
                 .balance(request.getInitialBalance())
+                .initialBalance(request.getInitialBalance())
                 .build();
 
         user.setAccount(account);

@@ -2,7 +2,7 @@ package com.code5150.meshgrouptest.controller;
 
 import com.code5150.meshgrouptest.dto.TransferRequest;
 import com.code5150.meshgrouptest.security.SecuritySchemes;
-import com.code5150.meshgrouptest.service.TransferService;
+import com.code5150.meshgrouptest.service.AccountService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = SecuritySchemes.BEARER_AUTH)
 public class TransferController {
 
-    private final TransferService transferService;
+    private final AccountService accountService;
 
     @PostMapping
     public void transfer(@Valid @RequestBody TransferRequest request) {
         Long fromUserId = getCurrentUserId();
-        transferService.transfer(fromUserId, request);
+        accountService.transfer(fromUserId, request);
     }
 
     private Long getCurrentUserId() {

@@ -9,5 +9,6 @@
     <include file="db/changelog/tables/002-create-email-data-table.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/tables/003-create-phone-data-table.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/tables/004-create-account-table.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/tables/005-add-initial-balance.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

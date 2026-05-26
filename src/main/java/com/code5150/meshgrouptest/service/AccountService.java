@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TransferService {
+public class AccountService {
 
     private final AccountRepository accountRepository;
 
@@ -45,5 +47,36 @@ public class TransferService {
         accountRepository.save(toAccount);
 
         log.info("Transfer completed: {} -> {}, amount: {}", fromUserId, toUserId, amount);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> getAllAccountIds() {
+        return accountRepository.findAllIds();
+    }
+
+    @Transactional
+    public void increaseBalances(List<Long> accountIds, BigDecimal rate, BigDecimal maxMultiplier) {
+        if (accountIds != null && !accountIds.isEmpty()) {
+            for (Long accountId : accountIds) {
+                accountRepository.findByIdWithLock(accountId).ifPresent(account -> {
+                    BigDecimal balance = account.getBalance();
+                    BigDecimal initial = account.getInitialBalance();
+                    BigDecimal cap = initial.multiply(maxMultiplier).setScale(2, RoundingMode.HALF_UP);
+
+                    if (balance.compareTo(cap) > 0) {
+                        return;
+                    }
+
+                    BigDecimal newBalance = balance.multiply(rate).setScale(2, RoundingMode.HALF_UP);
+                    if (newBalance.compareTo(cap) > 0) {
+                        newBalance = cap;
+                    }
+
+                    account.setBalance(newBalance);
+                    accountRepository.save(account);
+                });
+            }
+        }
+
     }
 }

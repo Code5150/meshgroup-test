@@ -32,6 +32,10 @@ jwt:
   secret: ${JWT_SECRET}
   expiration-ms: 3600000
 
+scheduler:
+  rate: 30000
+  batchSize: 100
+
 management:
   endpoints:
     web:

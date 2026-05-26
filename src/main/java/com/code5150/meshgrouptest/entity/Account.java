@@ -27,4 +27,7 @@ public class Account {
 
     @Column(name = "balance", precision = 19, scale = 2, nullable = false)
     private BigDecimal balance;
+
+    @Column(name = "initial_balance", precision = 19, scale = 2, nullable = false, updatable = false)
+    private BigDecimal initialBalance;
 }
