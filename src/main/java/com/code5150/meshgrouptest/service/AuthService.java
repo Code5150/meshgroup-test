@@ -9,26 +9,23 @@ import com.code5150.meshgrouptest.exception.UserAlreadyExistsException;
 import com.code5150.meshgrouptest.repository.*;
 import com.code5150.meshgrouptest.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
+
+import static com.code5150.meshgrouptest.exception.ExceptionMessages.EMAIL_OR_PHONE_ALREADY_TAKEN;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
     private final EmailDataRepository emailDataRepository;
     private final PhoneDataRepository phoneDataRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static final String EMAIL_OR_PHONE_ALREADY_TAKEN = "Email or phone already taken";
 
     @Transactional
     public void register(RegisterRequest request) {

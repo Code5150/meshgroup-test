@@ -4,6 +4,7 @@ import com.code5150.meshgrouptest.dto.UpdateUserRequest;
 import com.code5150.meshgrouptest.dto.UserResponse;
 import com.code5150.meshgrouptest.dto.UserSearchRequest;
 import com.code5150.meshgrouptest.entity.*;
+import com.code5150.meshgrouptest.exception.ExceptionMessages;
 import com.code5150.meshgrouptest.exception.ResourceNotFoundException;
 import com.code5150.meshgrouptest.repository.*;
 import jakarta.persistence.criteria.*;
@@ -27,7 +28,6 @@ public class UserService {
     private static final String WILDCARD = "%";
 
     private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
     private final EmailDataRepository emailDataRepository;
     private final PhoneDataRepository phoneDataRepository;
     private final PasswordEncoder passwordEncoder;
@@ -79,16 +79,16 @@ public class UserService {
         List<String> toAdd = new ArrayList<>(newEmails);
         toAdd.removeAll(current);
 
+        if (toRemove.size() == current.size() && toAdd.isEmpty()) {
+            throw new IllegalArgumentException("User must have at least one email");
+        }
         for (String email : toRemove) {
-            if (user.getEmails().size() <= 1) {
-                throw new IllegalArgumentException("User must have at least one email");
-            }
             emailDataRepository.deleteByUserIdAndEmail(user.getId(), email);
             user.getEmails().removeIf(e -> e.getEmail().equals(email));
         }
         for (String email : toAdd) {
             if (emailDataRepository.existsByEmail(email)) {
-                throw new IllegalArgumentException("Email already taken: " + email);
+                throw new IllegalArgumentException(ExceptionMessages.EMAIL_OR_PHONE_ALREADY_TAKEN);
             }
             EmailData emailData = EmailData.builder().user(user).email(email).build();
             user.getEmails().add(emailData);
@@ -102,16 +102,16 @@ public class UserService {
         List<String> toAdd = new ArrayList<>(newPhones);
         toAdd.removeAll(current);
 
+        if (toRemove.size() == current.size() && toAdd.isEmpty()) {
+            throw new IllegalArgumentException("User must have at least one phone");
+        }
         for (String phone : toRemove) {
-            if (user.getPhones().size() <= 1) {
-                throw new IllegalArgumentException("User must have at least one phone");
-            }
             phoneDataRepository.deleteByUserIdAndPhone(user.getId(), phone);
             user.getPhones().removeIf(p -> p.getPhone().equals(phone));
         }
         for (String phone : toAdd) {
             if (phoneDataRepository.existsByPhone(phone)) {
-                throw new IllegalArgumentException("Phone already taken: " + phone);
+                throw new IllegalArgumentException(ExceptionMessages.EMAIL_OR_PHONE_ALREADY_TAKEN);
             }
             PhoneData phoneData = PhoneData.builder().user(user).phone(phone).build();
             user.getPhones().add(phoneData);
