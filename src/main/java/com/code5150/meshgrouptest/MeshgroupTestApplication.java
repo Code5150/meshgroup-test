@@ -7,10 +7,10 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 
-// TODO: когда буду делать кэш, убрать exclude Redis
-@SpringBootApplication(exclude = {DataRedisAutoConfiguration.class})
+@SpringBootApplication
+@EnableCaching
 @OpenAPIDefinition(info = @Info(
         title = "Приложение по переводу денег между счетами",
         version = "1.0",

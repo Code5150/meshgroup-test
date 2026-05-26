@@ -9,6 +9,7 @@ import com.code5150.meshgrouptest.exception.UserAlreadyExistsException;
 import com.code5150.meshgrouptest.repository.*;
 import com.code5150.meshgrouptest.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -28,18 +28,21 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private static final String EMAIL_OR_PHONE_ALREADY_TAKEN = "Email or phone already taken";
+
+    @Transactional
     public void register(RegisterRequest request) {
         List<String> emails = request.getEmails();
         List<String> phones = request.getPhones();
 
         for (String email : emails) {
             if (emailDataRepository.existsByEmail(email)) {
-                throw new UserAlreadyExistsException("Email already taken: " + email);
+                throw new UserAlreadyExistsException(EMAIL_OR_PHONE_ALREADY_TAKEN);
             }
         }
         for (String phone : phones) {
             if (phoneDataRepository.existsByPhone(phone)) {
-                throw new UserAlreadyExistsException("Phone already taken: " + phone);
+                throw new UserAlreadyExistsException(EMAIL_OR_PHONE_ALREADY_TAKEN);
             }
         }
 
@@ -68,6 +71,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public AuthResponse authenticate(AuthRequest request) {
         User user = findUserByLogin(request);
 

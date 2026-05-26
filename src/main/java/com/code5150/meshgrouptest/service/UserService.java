@@ -8,6 +8,8 @@ import com.code5150.meshgrouptest.exception.ResourceNotFoundException;
 import com.code5150.meshgrouptest.repository.*;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "users", key = "#id")
     public UserResponse getUserResponseById(Long id) {
         return toUserResponse(getUserById(id));
     }
@@ -48,10 +51,12 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, UpdateUserRequest request) {
+    @CachePut(value = "users", key = "#userId")
+    public UserResponse updateUser(Long userId, UpdateUserRequest request) {
         User user = getUserById(userId);
         updateEmails(user, request.getEmails());
         updatePhones(user, request.getPhones());
+        return toUserResponse(user);
     }
 
     private void updateEmails(User user, List<String> newEmails) {

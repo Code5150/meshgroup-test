@@ -31,9 +31,9 @@ public class UserController {
     }
 
     @PutMapping("/me")
-    public void updateMe(@Valid @RequestBody UpdateUserRequest request) {
+    public UserResponse updateMe(@Valid @RequestBody UpdateUserRequest request) {
         Long userId = getCurrentUserId();
-        userService.updateUser(userId, request);
+        return userService.updateUser(userId, request);
     }
 
     private Long getCurrentUserId() {
