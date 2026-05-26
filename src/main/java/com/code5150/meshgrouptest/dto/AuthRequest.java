@@ -10,13 +10,14 @@ import lombok.*;
 @Builder
 public class AuthRequest {
 
-    @Size(min = 8, max = 500)
-    private String password;
-
     @Email
     @Size(max = 200)
     private String email;
 
-    @Size(max = 13)
+    @Pattern(regexp = "\\d*")
+    @Size(min = 7, max = 13)
     private String phone;
+
+    @Size(min = 8, max = 500)
+    private String password;
 }

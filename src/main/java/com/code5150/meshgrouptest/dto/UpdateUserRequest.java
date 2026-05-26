@@ -5,16 +5,14 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UpdateUserRequest {
 
     @NotEmpty
     private List<@NotBlank @Size(max = 200) @Email String> emails;
 
     @NotEmpty
-    private List<@NotBlank @Size(max = 13) String> phones;
+    private List<@NotBlank @Size(min = 7, max = 13) @Pattern(regexp = "\\d*") String> phones;
 }

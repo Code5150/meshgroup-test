@@ -15,11 +15,12 @@ public class UserSearchRequest {
 
     private LocalDate dateOfBirth;
 
-    @Size(max = 13)
-    private String phone;
-
     @Size(max = 500)
     private String name;
+
+    @Pattern(regexp = "\\d*")
+    @Size(min = 7, max = 13)
+    private String phone;
 
     @Email
     @Size(max = 200)

@@ -76,7 +76,7 @@ public class AuthService {
         }
 
         String token = jwtTokenProvider.generateToken(user.getId());
-        return AuthResponse.builder().token(token).build();
+        return new AuthResponse(token);
     }
 
     private User findUserByLogin(AuthRequest request) {
