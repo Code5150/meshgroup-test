@@ -1,0 +1,11 @@
+jwt:
+  secret: "$2a$10$nXhl6YWUvDHycLEzxb9GxuqTxDE/sGrgcX5Qj6TSSOGGTHaPjKOZO"
+  expiration-ms: 3600000
+
+scheduler:
+  rate: 30000
+  batchSize: 100
+
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
