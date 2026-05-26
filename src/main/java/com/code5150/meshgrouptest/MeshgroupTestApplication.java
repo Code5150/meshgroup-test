@@ -1,6 +1,6 @@
 package com.code5150.meshgrouptest;
 
-import com.code5150.meshgrouptest.security.SecuritySchemes;
+import com.code5150.meshgrouptest.config.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;

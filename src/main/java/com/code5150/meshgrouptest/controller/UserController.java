@@ -3,7 +3,7 @@ package com.code5150.meshgrouptest.controller;
 import com.code5150.meshgrouptest.dto.UpdateUserRequest;
 import com.code5150.meshgrouptest.dto.UserResponse;
 import com.code5150.meshgrouptest.dto.UserSearchRequest;
-import com.code5150.meshgrouptest.security.SecuritySchemes;
+import com.code5150.meshgrouptest.config.security.SecuritySchemes;
 import com.code5150.meshgrouptest.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

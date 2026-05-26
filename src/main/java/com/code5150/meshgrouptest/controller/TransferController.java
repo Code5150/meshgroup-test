@@ -1,7 +1,7 @@
 package com.code5150.meshgrouptest.controller;
 
 import com.code5150.meshgrouptest.dto.TransferRequest;
-import com.code5150.meshgrouptest.security.SecuritySchemes;
+import com.code5150.meshgrouptest.config.security.SecuritySchemes;
 import com.code5150.meshgrouptest.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,6 +1,10 @@
-package com.code5150.meshgrouptest.exception;
+package com.code5150.meshgrouptest.exception.handler;
 
 import com.code5150.meshgrouptest.dto.ErrorResponse;
+import com.code5150.meshgrouptest.exception.InsufficientFundsException;
+import com.code5150.meshgrouptest.exception.InvalidCredentialsException;
+import com.code5150.meshgrouptest.exception.ResourceNotFoundException;
+import com.code5150.meshgrouptest.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

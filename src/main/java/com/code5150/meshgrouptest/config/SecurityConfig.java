@@ -1,6 +1,6 @@
 package com.code5150.meshgrouptest.config;
 
-import com.code5150.meshgrouptest.security.JwtAuthFilter;
+import com.code5150.meshgrouptest.config.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

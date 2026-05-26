@@ -1,4 +1,4 @@
-package com.code5150.meshgrouptest.security;
+package com.code5150.meshgrouptest.config.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

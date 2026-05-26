@@ -7,7 +7,7 @@ import com.code5150.meshgrouptest.entity.*;
 import com.code5150.meshgrouptest.exception.InvalidCredentialsException;
 import com.code5150.meshgrouptest.exception.UserAlreadyExistsException;
 import com.code5150.meshgrouptest.repository.*;
-import com.code5150.meshgrouptest.security.JwtTokenProvider;
+import com.code5150.meshgrouptest.config.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
