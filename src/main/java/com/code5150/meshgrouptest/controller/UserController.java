@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +43,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping("/search")
-    public Page<UserResponse> search(@Valid UserSearchRequest request) {
-        return userService.searchUsers(request);
+    public PagedModel<UserResponse> search(@Valid UserSearchRequest request) {
+        return new PagedModel<>(userService.searchUsers(request));
     }
 
     @Operation(summary = "Update current user profile")
