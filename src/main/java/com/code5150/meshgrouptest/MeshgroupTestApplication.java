@@ -14,9 +14,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 @OpenAPIDefinition(info = @Info(
-        title = "Приложение по переводу денег между счетами",
-        version = "1.0",
-        description = "Документация для микросервиса"
+        title = "Money transfer application",
+        version = "1.0"
 ))
 @SecurityScheme(
         name = SecuritySchemes.BEARER_AUTH,
